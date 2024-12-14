@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: micromanage-web-ingress
-  namespace: micromanage-enterprise
+  name: urlstub-web-ingress
+  namespace: urlstub
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
@@ -10,16 +10,16 @@ metadata:
 spec:
   tls:
   - hosts:
-    - dash.micromanage.app
-    secretName: micromanage-tls
+    - s.liem.zip
+    secretName: urlstub-tls
   rules:
-  - host: dash.micromanage.app
+  - host: s.liem.zip
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: micromanage-web
+            name: urlstub-web
             port: 
               number: 80

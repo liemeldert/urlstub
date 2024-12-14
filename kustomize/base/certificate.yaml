@@ -1,13 +1,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: micromanage-cert
-  namespace: micromanage-enterprise
+  name: urlstub-cert
+  namespace: urlstub
 spec:
-  secretName: micromanage-tls
+  secretName: urlstub-tls
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: dash.micromanage.app
+  commonName: s.liem.zip
   dnsNames:
-  - dash.micromanage.app
+  - dash.liem.zip
