@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: micromanage-cert
+  namespace: micromanage-enterprise
+spec:
+  secretName: micromanage-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: dash.micromanage.app
+  dnsNames:
+  - dash.micromanage.app

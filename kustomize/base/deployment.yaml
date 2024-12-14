@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micromanage-web
+  namespace: micromanage-enterprise
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micromanage-web
+  template:
+    metadata:
+      labels:
+        app: micromanage-web
+    spec:
+      containers:
+      - name: micromanage-web
+        image: ghcr.io/liemeldert/micromanage_enterprise:latest
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - secretRef:
+            name: micromanage-web-secrets
+        resources:
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+      imagePullSecrets:
+      - name: dockerconfigjson-github-com
