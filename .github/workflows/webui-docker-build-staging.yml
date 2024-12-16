@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'umdm-webui/**'
+      - 'urlstub-web/**'
     # paths-ignore:
     #   - '**.md' # Ignore markdown files changes to avoid unnecessary builds
   pull_request:
