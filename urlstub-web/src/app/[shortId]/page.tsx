@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { headers } from 'next/headers'
 import RedirectLanding from './redirect_landing';
 
 export default function RedirectPage() {
@@ -12,6 +13,9 @@ export default function RedirectPage() {
   // state variable for displaying HTML if needed
   const [landing, setLanding] = useState<React.ReactElement | null>(null);
 
+  // site data collection
+  const header = headers()
+
   useEffect(() => { 
     const handleRedirect = async () => {
       try {
@@ -21,6 +25,26 @@ export default function RedirectPage() {
           const data = await response.json();
           console.log(`Redirecting to: ${data.originalUrl}`);
           console.log(data);
+
+          if (data.collect_visitor_data) {
+            const ip = ((await header).get('x-forwarded-for') ?? '127.0.0.1').split(',')[0] 
+            const user_agent = (await header).get('user-agent') ?? 'Unknown'
+            const referer = (await header).get('referer') ?? 'Unknown'
+
+            const collect_data = await fetch(`/api/user_data`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ shortId, ip, user_agent, referer }),
+            });
+
+            if (!collect_data.ok) {
+              console.error('Failed to send visitor data');
+            }
+          }
+
+          // landing display
           if (data.displayLanding) {
             setLanding(<RedirectLanding originalUrl={data.originalUrl} />);
             setTimeout(() => {
@@ -40,7 +64,7 @@ export default function RedirectPage() {
     };
 
     handleRedirect();
-  }, [shortId, router]);
+  }, [shortId, router, header]);
 
   return (landing);  
 }
